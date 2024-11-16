@@ -1,9 +1,9 @@
-.data-card button {
+.data-card .btn1 {
     display: none;
     /* Hide the button by default */
 }
 
-.data-card:hover button {
+.data-card:hover .btn1 {
     display: block;
     /* Show the button on hover */
 }

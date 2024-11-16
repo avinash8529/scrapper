@@ -1,43 +1,61 @@
-import React from 'react'
+"use client";//enbles client component by default next teat as server component
+import React, { useEffect, useState } from 'react';//states
+import axios from 'axios';
 
 const PropertyList = () => {
+    const [data, setData] = useState([]);// to stoore the data from api
+
+    useEffect(() => {
+        getAllData();//to initialise fecthing when page loads
+    }, [])
+
+    const getAllData = async () => {// function to fetch data from api
+        try {
+            debugger
+            var result = await axios.get("http://localhost:3000/api/property");//api 
+            setData(result.data.result.reverse());// set data tor display list 
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
         <div className="container-fluid">
             <div className="container">
-                <h3>
-                    Popular Owner Properties
-                </h3>
+                <h3>Popular Owner Properties</h3>
 
-                <div className="d-flex overflow-auto" >
-                    <div className='col-sm-3 m-1 p-1 border rounded border-danger' style={{ minHeight: "350px" }}>
-                        <div className="data-card rounded" >
-                            <img className='img-fluid rounded' src="https://images.unsplash.com/photo-1443428018053-13da55589fed?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Property Image" />
-                            <div className="col-sm-12 p-2 ">
-                                <div className="col-sm-12">2 BHK</div>
-                                <div className="col-sm-12"><b>&#8377; 24 Lac | 960 sqft.</b></div>
-                                <div className="col-sm-12 mt-1">Ashok Vihar,Delhi</div>
-                                <button className='btn btn-danger'>View Details</button>
+                {/* Flex container with horizontal scroll */}
+                <div className="d-flex overflow-auto" style={{ overflowX: 'auto' }}>
+
+                    {data.map((item, index) => {
+                        return (
+                            <div key={index} className="col-sm-3 m-1 p-1 border rounded border-danger" style={{ minHeight: "350px", flex: "0 0 auto" }}>
+                                <div className="data-card rounded">
+                                    <div className="col-sm-12 border">
+                                        <img className='rounded' src={item.picture} width="310px" height="200px" alt={item.title || "Property Image"} />
+                                    </div>
+                                    <div className="col-sm-12 p-2">
+                                        <div className="col-sm-12">{item.title}</div>
+                                        <div className="col-sm-12"><b>{item.price || "Price not available"}</b></div>
+                                        <div className="col-sm-12 mt-1">{item.location || "Location not specified"}</div>
+                                        <button
+                                            onClick={() =>
+                                                alert(`${item.title}\nPrice: ${item.price}\nThanks for visiting`)
+                                            }
+                                            className="btn btn1 btn-danger"
+                                        >
+                                            View Details
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                    </div>
-
-                    <div className='col-sm-3 m-1 p-1 border rounded border-danger' style={{ minHeight: "350px" }}>
-                        <div className="data-card rounded" >
-                            <img className='img-fluid rounded' src="https://images.unsplash.com/photo-1443428018053-13da55589fed?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Property Image" />
-                            <div className="col-sm-12 p-2 ">
-                                <div className="col-sm-12">2 BHK</div>
-                                <div className="col-sm-12"><b>&#8377; 24 Lac | 960 sqft.</b></div>
-                                <div className="col-sm-12 mt-1">Ashok Vihar,Delhi</div>
-                                <button className='btn btn-danger'>View Details</button>
-                            </div>
-                        </div>
-
-                    </div>
+                        );
+                    })}
 
                 </div>
             </div>
         </div>
+
     )
 }
 

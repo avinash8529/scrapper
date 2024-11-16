@@ -19,7 +19,7 @@ const propertySchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        // default: Date.now
     },
     status: {
         type: String,
@@ -27,4 +27,4 @@ const propertySchema = new mongoose.Schema({
     },
 });
 
-export const Property = mongoose.models.property || new mongoose.model("property", propertySchema);
+export const Property = mongoose.models.property || new mongoose.model("property", propertySchema);//check for table if not create one to handle duplicate
