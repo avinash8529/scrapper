@@ -55,21 +55,21 @@ export const POST = async (req) => {//for saving the fetched data
             const picture = await page.$eval('.mb-ldp__dtls__photo__fig img', (el) => el.getAttribute('src')) || null;//for image
 
             var data = {
-                title: title,
-                location: location,
-                price: price,
-                picture: picture,
+                title: title !== "" ? title : null,
+                location: location !== "" ? location : null,
+                price: price !== "" ? price : null,
+                picture: picture !== "" ? picture : null,
                 status: 'Completed',
                 createdAt: Date.now(),
-            }// i arrange the data object for db and also add a timestamp 
+            };// i arrange the data object for db and also add a timestamp 
             const newProperty = new Property(data);//initialise a new schema 
             await newProperty.save();//add data in my table 
 
             return NextResponse.json({ success: 200, data: newProperty });// sends back response and data 
         } catch (error) {
+            return NextResponse.json({ result: false, error: 'Failed to scrape data' }, { status: 500 });//eror handling
             console.error('Scraping failed:', error);
 
-            return NextResponse.json({ success: false, error: 'Failed to scrape data' }, { status: 500 });//eror handling
         }
     } catch (error) {
         console.error('Database connection or processing error:', error);

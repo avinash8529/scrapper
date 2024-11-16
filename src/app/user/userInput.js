@@ -25,6 +25,7 @@ const UserInput = () => {
             // Send POST request
             const response = await axios.post("http://localhost:3000/api/property", payload);
             // Update result if the response is valid
+            debugger
             if (response.data) {
                 setResult(response.data.data); // Set the result state
                 console.log(response.data.data);
@@ -54,15 +55,15 @@ const UserInput = () => {
                     </div>
                 </form> :
                     <>
-                        {(error === true && result !== null) ? <div className='col-sm-3'><h5 className='text-danger'>Failed...!</h5>
+                        {(error === true || result !== null) ? <div className='col-sm-3'><h5 className='text-danger'>Failed to fetch...!(enter proper url)</h5>
                             <button onClick={() => setError(false)} className='btn btn-warning'>Back</button>
                         </div> :
                             <div className='col-sm-3 m-1 p-1 border rounded border-danger' style={{ minHeight: "330px" }}>
                                 <div className="data-card rounded" >
                                     <div className="col-sm-12 text-success"><h5 className='text-success'>Data saved successfully..</h5></div>
-                                    <img className='rounded text-center' src={result.picture} width="310px" height="200px" alt={result.title || "Property Image"} />
+                                    <img className='rounded text-center' src={result.picture} width="310px" height="200px" alt={result.title || "Property Image Not available"} />
                                     <div className="col-sm-12 p-2 ">
-                                        <div className="col-sm-12">{result.title}</div>
+                                        <div className="col-sm-12">{result.title || "Not availabel"}</div>
                                         <div className="col-sm-12"><b>{result.price}.</b></div>
                                         <div className="col-sm-12 mt-1">{result.location}</div>
                                         {/* <button className='btn btn-danger m-1'>View Details</button> */}
